@@ -1,4 +1,6 @@
 $color_blue: #243e7d;
+$color_red: #ff0000;
+$color_white: #ffffff;
 
 .pointer{
     cursor: pointer;
@@ -36,4 +38,13 @@ $color_blue: #243e7d;
 }
 .full_min_height{
     min-height: 100vh;
+}
+.dangerBackground {
+    background-color: $color_red;
+    color: $color_white;
+}
+.alertMessage{
+    right: 10px;
+    top: 10px;
+    box-shadow: 0px 10px 34px -15px rgba(0, 0, 0, 0.24);
 }
