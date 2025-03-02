@@ -1,0 +1,39 @@
+$color_blue: #243e7d;
+
+.pointer{
+    cursor: pointer;
+}
+.text_center{
+    text-align: center;
+}
+.text_starting{
+    text-align: start;
+}
+.text_end{
+    text-align: end;
+}
+.submit_color{
+    color: $color_blue;
+}
+.medium_font_size{
+    font-size: 14px;
+}
+.small_font_size{
+    font-size: 12px;
+}
+.x_small_font_size{
+    font-size: 10px;
+}
+.input_focus_none{
+    &:focus{
+        border: transparent;
+        outline: none;
+    }
+    &:focus-visible{
+        outline: none;
+        border: transparent;
+    }
+}
+.full_min_height{
+    min-height: 100vh;
+}
