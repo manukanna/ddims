@@ -1,0 +1,40 @@
+$labelColor: rgb(43 52 52 / 77%);
+$loginBackGroundColor: #e6e8f0;
+$loginBoxColor: #f2f1f6;
+$color_blue: #243e7d;
+$submitButton: #2d4f73;
+
+.login_component {
+  background-color: $loginBackGroundColor;
+  height: 100vh;
+  .login_box {
+    font-family: sans-serif;
+    box-shadow: 0px 10px 34px -15px rgba(0, 0, 0, 0.24);
+    background-color: $loginBoxColor;
+    .input_parent {
+      label {
+        color: $labelColor;
+        font-size: 14px;
+      }
+      input {
+        border: 0.1px solid #aaaa;
+        border-radius: 5px;
+      }
+      .password_icons {
+        top: 55%;
+        right: 18px;
+        .icon_modify {
+          font-size: 18px;
+        }
+      }
+    }
+    .forgot_password {
+      font-size: 13px;
+      color: $color_blue;
+    }
+	.submitButton{
+		background-color: $submitButton;
+		border-color: $submitButton;
+	}
+  }
+}
