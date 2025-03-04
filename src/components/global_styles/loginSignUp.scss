@@ -4,10 +4,10 @@ $loginBoxColor: #f2f1f6;
 $color_blue: #243e7d;
 $submitButton: #2d4f73;
 
-.login_component {
+.loginSignUp_component {
   background-color: $loginBackGroundColor;
   height: 100vh;
-  .login_box {
+  .loginSignUp_box {
     font-family: sans-serif;
     box-shadow: 0px 10px 34px -15px rgba(0, 0, 0, 0.24);
     background-color: $loginBoxColor;
