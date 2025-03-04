@@ -1,12 +1,10 @@
 import './App.css';
-import { Login } from './components/Login/login';
+import { SwitchLoginSignUpComponent } from './components/common_components/SwitchLoginSignUp/SwitchLoginSignUp';
 
 function App() {
   return (
     <>
-    <div>
-      <Login/>
-    </div>
+      <SwitchLoginSignUpComponent/>
     </>
   );
 }
