@@ -7,7 +7,7 @@ export const SwitchLoginSignUpContent = () => {
     const dispatch = useDispatch()
     const { switchLoginSignUp } = useSelector((state: any) => state.swicthLoginSignUpComponent);
     const handleSwitchLoginSignUp = () => {
-        dispatch(swicthLoginSignUpComponent(switchLoginSignUp));
+        dispatch(swicthLoginSignUpComponent(!switchLoginSignUp));
     }
     return (<>
         <div className="create_account x_small_font_size">
