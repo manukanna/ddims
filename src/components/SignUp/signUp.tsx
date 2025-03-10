@@ -3,8 +3,12 @@ import "../global_styles/loginSignUp.scss"
 import { DangerAlert } from "../common_components/alert_component/Alert_Component"
 import { SwitchLoginSignUpContent } from "../common_components/SwitchLoginSignUp/SwitchLoginSignUp" 
 import { ValidateInputFields } from "../common_Utilis/validationOfInputFields"
+import { useDispatch } from "react-redux";
+import { swicthLoginSignUpComponent, updateSignUpData } from "../Redux/ddimsSlice";
+
 const SignUpPage = () => {
-  const [showErrorMessage, setshowErrorMessage] = useState({ showAlert: false, alertMessage: '' })
+  const dispatch = useDispatch()
+  const [showErrorMessage, setshowErrorMessage] = useState({ showAlert: false, message: '',alertColor:'' })
   const [signUpDetails, setSignUpDetails] = useState({
     firstName: "",
     lastName: "",
@@ -21,12 +25,19 @@ const SignUpPage = () => {
     e.preventDefault();
     const missingInputField = ValidateInputFields(signUpDetails);
     if (missingInputField) {
-      setshowErrorMessage({ showAlert: true, alertMessage: `Please verify the ${missingInputField} field` })
+      setshowErrorMessage({ showAlert: true, message: `Please verify the ${missingInputField} field`, alertColor:"dangerBackground" })
       setTimeout(() => {
-        setshowErrorMessage({ showAlert: false, alertMessage: '' });
+        setshowErrorMessage({ showAlert: false, message: '',alertColor:'' });
       }, 2000);
     } else {
       // setCreateAccount(true);
+      setshowErrorMessage({ showAlert: true, message: `your account has been created successfully` , alertColor:"successBackground"})
+      setTimeout(() => {
+        setshowErrorMessage({ showAlert: false, message: '',alertColor:'' });
+        dispatch(updateSignUpData(signUpDetails));
+          dispatch(swicthLoginSignUpComponent(false));
+      }, 2000);
+          
       setSignUpDetails({
         firstName: "",
         lastName: "",
@@ -40,10 +51,10 @@ const SignUpPage = () => {
 
   return (
     <>
-      <div className="contaner loginSignUp_component position-relative">
-        <div className="row">
+      <div className="contaner position-relative">
+        <div className="loginSignUp_component">
           <div className="d-flex justify-content-center align-items-center full_min_height">
-            <div className="col-5">
+            <div className="col-xl-3 col-lg-4 col-md-5 col-sm-6 col-xs-12">
               <div className="loginSignUp_box p-4 rounded text_center ">
                 <h3 className="my-2"> SignUp Page</h3>
                 <h6 className="mb-4 medium_font_size">Please Enter below Details to Register</h6>
@@ -128,7 +139,7 @@ const SignUpPage = () => {
         </div>
       </div>
 
-      {showErrorMessage.showAlert && <DangerAlert alertMessage={showErrorMessage.alertMessage} />}
+      {showErrorMessage.showAlert && <DangerAlert alertMessage={showErrorMessage} />}
     </>
   );
 };

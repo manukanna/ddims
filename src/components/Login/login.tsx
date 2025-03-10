@@ -2,7 +2,11 @@ import { useState } from "react"
 import "../global_styles/loginSignUp.scss"
 import { SwitchLoginSignUpContent } from "../common_components/SwitchLoginSignUp/SwitchLoginSignUp"
 import { DangerAlert } from "../common_components/alert_component/Alert_Component"
+import { useDispatch } from "react-redux"
+import { updateLoginDetails } from "../Redux/ddimsSlice"
 export const Login = () => {
+    const dispatch = useDispatch()
+    // const loginDetails=useSelector((state: any) => state.updateLoginDetails)    
     const [userCreds, setUserCred] = useState({ name_email: '', password: '' })
     const [alertError, setalertError] = useState({ showAlert: false, alertMessage: '' });
     const [showHidePassword, setshowHidePassword] = useState(false);
@@ -19,17 +23,18 @@ export const Login = () => {
                 setalertError({ showAlert: false, alertMessage: '' });
             }, 2000);
         } else {
+            dispatch(updateLoginDetails(userCreds));
             console.log(userCreds)
         }
     }
     return (
         <>
-            <div className="contaner loginSignUp_component position-relative">
-                <div className="row">
+            <div className="contaner position-relative">
+                <div className="loginSignUp_component">
                         <div className="d-flex justify-content-center align-items-center full_min_height">
-                    <div className="col-5">
+                    <div className="col-xl-3 col-lg-4 col-md-5 col-sm-6 col-xs-12">
                             <div className="loginSignUp_box p-4 rounded text_center ">
-                                <h3 className="my-2">Welcome DDIMS</h3>
+                                <h3 className="my-2">Welcome Practice</h3>
                                 <h6 className="mb-4 medium_font_size">Please Enter below Details to Experience</h6>
                                 <div>
                                     <div className="input_parent w-100 my-2 text_starting">
@@ -45,7 +50,7 @@ export const Login = () => {
                                         </div>
                                     </div>
                                     <div className="forgot_password text_end pointer text-decoration-underline">Forgot Password</div>
-                                    <div className="btn btn-primary my-2 submitButton w-100 py-2 my-3" onClick={submitUserCreds}>Login DDIMS</div>
+                                    <div className="btn btn-primary my-2 submitButton w-100 py-2 my-3" onClick={submitUserCreds}>Login Practice</div>
                                     <div className="d-flex justify-content-center align-items-center">
                                         <hr className="w-50" />
                                         <span className="px-2 small_font_size">or</span>
