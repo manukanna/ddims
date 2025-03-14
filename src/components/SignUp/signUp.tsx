@@ -8,7 +8,7 @@ import { swicthLoginSignUpComponent, updateSignUpData } from "../Redux/ddimsSlic
 
 const SignUpPage = () => {
   const dispatch = useDispatch()
-  const [showErrorMessage, setshowErrorMessage] = useState({ showAlert: false, message: '',alertColor:'' })
+  const [showErrorMessage, setshowErrorMessage] = useState({ showAlert: false, message: '',alertBgColor:'' })
   const [signUpDetails, setSignUpDetails] = useState({
     firstName: "",
     lastName: "",
@@ -25,15 +25,15 @@ const SignUpPage = () => {
     e.preventDefault();
     const missingInputField = ValidateInputFields(signUpDetails);
     if (missingInputField) {
-      setshowErrorMessage({ showAlert: true, message: `Please verify the ${missingInputField} field`, alertColor:"dangerBackground" })
-      setTimeout(() => {
-        setshowErrorMessage({ showAlert: false, message: '',alertColor:'' });
-      }, 2000);
+      setshowErrorMessage({ showAlert: true, message: `Please verify the ${missingInputField} field`, alertBgColor:"dangerBackground" })
+      // setTimeout(() => {
+      //   setshowErrorMessage({ showAlert: false, message: '',alertBgColor:'' });
+      // }, 2000);
     } else {
       // setCreateAccount(true);
-      setshowErrorMessage({ showAlert: true, message: `your account has been created successfully` , alertColor:"successBackground"})
+      setshowErrorMessage({ showAlert: true, message: `your account has been created successfully` , alertBgColor:"successBackground"})
       setTimeout(() => {
-        setshowErrorMessage({ showAlert: false, message: '',alertColor:'' });
+        setshowErrorMessage({ showAlert: false, message: '',alertBgColor:'' });
         dispatch(updateSignUpData(signUpDetails));
           dispatch(swicthLoginSignUpComponent(false));
       }, 2000);

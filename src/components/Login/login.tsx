@@ -4,11 +4,14 @@ import { SwitchLoginSignUpContent } from "../common_components/SwitchLoginSignUp
 import { DangerAlert } from "../common_components/alert_component/Alert_Component"
 import { useDispatch } from "react-redux"
 import { updateLoginDetails } from "../Redux/ddimsSlice"
+import { useNavigate } from "react-router-dom";
+
 export const Login = () => {
     const dispatch = useDispatch()
+    const navigate = useNavigate();
     // const loginDetails=useSelector((state: any) => state.updateLoginDetails)    
     const [userCreds, setUserCred] = useState({ name_email: '', password: '' })
-    const [alertError, setalertError] = useState({ showAlert: false, alertMessage: '' });
+    const [alertError, setalertError] = useState({ showAlert: false, message: '', alertBgColor:'' });
     const [showHidePassword, setshowHidePassword] = useState(false);
     const hideShowPassword = () => {
         setshowHidePassword(!showHidePassword)
@@ -18,14 +21,21 @@ export const Login = () => {
     }
     const submitUserCreds = () => {
         if ((userCreds.name_email === "") || (userCreds.password === "")) {
-            setalertError({ showAlert: true, alertMessage: 'Please verify your Username or Password.' });
-            setTimeout(() => {
-                setalertError({ showAlert: false, alertMessage: '' });
-            }, 2000);
+            alertMessageResponse({ showAlert: true, message: 'Please verify your Username or Password.', alertBgColor:'dangerBackground' })
         } else {
+            if((userCreds.name_email === "manu@gmail.com" && userCreds.password === "Manu@123")) {
             dispatch(updateLoginDetails(userCreds));
-            console.log(userCreds)
+            navigate("/stepper");
+            } else {
+                alertMessageResponse({ showAlert: true, message: 'Please verify your Username or Password.', alertBgColor:'dangerBackground' })
+            }
         }
+    }
+    const alertMessageResponse = (alertMessageObj: { showAlert: boolean, message: string, alertBgColor:string }) => {
+        setalertError(alertMessageObj);
+        setTimeout(() => {
+            setalertError({ showAlert: false, message: '', alertBgColor:'red' })
+        }, 2000);
     }
     return (
         <>
@@ -34,7 +44,7 @@ export const Login = () => {
                         <div className="d-flex justify-content-center align-items-center full_min_height">
                     <div className="col-xl-3 col-lg-4 col-md-5 col-sm-6 col-xs-12">
                             <div className="loginSignUp_box p-4 rounded text_center ">
-                                <h3 className="my-2">Welcome Practice</h3>
+                                <h3 className="my-2">Welcome DDIMS</h3>
                                 <h6 className="mb-4 medium_font_size">Please Enter below Details to Experience</h6>
                                 <div>
                                     <div className="input_parent w-100 my-2 text_starting">
@@ -56,14 +66,14 @@ export const Login = () => {
                                         <span className="px-2 small_font_size">or</span>
                                         <hr className="w-50" />
                                     </div>
-                                   <SwitchLoginSignUpContent/>
+                                    <SwitchLoginSignUpContent />
                                 </div>
                             </div>
                         </div>
                     </div>
                 </div>
             </div>
-            {alertError.showAlert && <DangerAlert alertMessage={alertError.alertMessage} />}
+            {alertError.showAlert && <DangerAlert alertMessage={alertError} />}
         </>
     )
 }
