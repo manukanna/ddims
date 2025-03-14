@@ -42,7 +42,7 @@ export const Login = () => {
             <div className="contaner position-relative">
                 <div className="loginSignUp_component">
                         <div className="d-flex justify-content-center align-items-center full_min_height">
-                    <div className="col-xl-3 col-lg-4 col-md-5 col-sm-6 col-xs-12">
+                    <div className="col-xl-3 col-lg-4 col-md-5 col-sm-6 col-11">
                             <div className="loginSignUp_box p-4 rounded text_center ">
                                 <h3 className="my-2">Welcome DDIMS</h3>
                                 <h6 className="mb-4 medium_font_size">Please Enter below Details to Experience</h6>
