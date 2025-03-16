@@ -4,11 +4,12 @@ import { SwitchLoginSignUpContent } from "../common_components/SwitchLoginSignUp
 import { DangerAlert } from "../common_components/alert_component/Alert_Component"
 import { useDispatch } from "react-redux"
 import { updateLoginDetails } from "../Redux/ddimsSlice"
-import { useNavigate } from "react-router-dom";
+import { useAuth } from "../ProtectedContent/AuthContext";
+import { expiryTokenData } from "../ProtectedContent/secureAuthentication"
 
 export const Login = () => {
     const dispatch = useDispatch()
-    const navigate = useNavigate();
+    const { login } = useAuth()
     // const loginDetails=useSelector((state: any) => state.updateLoginDetails)    
     const [userCreds, setUserCred] = useState({ name_email: '', password: '' })
     const [alertError, setalertError] = useState({ showAlert: false, message: '', alertBgColor:'' });
@@ -25,7 +26,8 @@ export const Login = () => {
         } else {
             if((userCreds.name_email === "manu@gmail.com" && userCreds.password === "Manu@123")) {
             dispatch(updateLoginDetails(userCreds));
-            navigate("/stepper");
+            expiryTokenData();
+            login();
             } else {
                 alertMessageResponse({ showAlert: true, message: 'Please verify your Username or Password.', alertBgColor:'dangerBackground' })
             }
@@ -49,11 +51,11 @@ export const Login = () => {
                                 <div>
                                     <div className="input_parent w-100 my-2 text_starting">
                                         <label htmlFor="name_email">Username / Email*</label>
-                                        <input onChange={userCredsChange} type="text" id="name_email" name="name_email" className="w-100 px-2 py-2 input_focus_none" autoComplete="off" />
+                                        <input autoComplete="off" onChange={userCredsChange} value={userCreds.name_email} type="text" id="name_email" name="name_email" className="w-100 px-2 py-2 input_focus_none" />
                                     </div>
                                     <div className="input_parent my-2 text_starting position-relative">
                                         <label htmlFor="password">Password*</label>
-                                        <input onChange={userCredsChange} type={showHidePassword ? 'text' : 'password'} id="password" name="password" className="w-100 ps-2 pe-5 py-2 input_focus_none" />
+                                        <input autoComplete="new-password" onChange={userCredsChange} value={userCreds.password} type={showHidePassword ? 'text' : 'password'} id="password" name="password" className="w-100 ps-2 pe-5 py-2 input_focus_none" />
                                         <div className="password_icons position-absolute" onClick={hideShowPassword}>
                                             {showHidePassword ? <div><span className="icon_modify pointer material-symbols-outlined cursor">visibility</span></div>
                                                 : <div><span className="icon_modify material-symbols-outlined pointer">visibility_off</span></div>}

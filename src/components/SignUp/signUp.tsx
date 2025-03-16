@@ -17,7 +17,6 @@ const SignUpPage = () => {
     email: "",
     catogery: "",
   });
-  // const [createAccount, setCreateAccount] = useState(false);
   const handleChange = (e: { target: any }) => {
     setSignUpDetails({ ...signUpDetails, [e.target.name]: e.target.value });
   };
@@ -30,7 +29,6 @@ const SignUpPage = () => {
         setshowErrorMessage({ showAlert: false, message: '',alertBgColor:'' });
       }, 2000);
     } else {
-      // setCreateAccount(true);
       setshowErrorMessage({ showAlert: true, message: `your account has been created successfully` , alertBgColor:"successBackground"})
       setTimeout(() => {
         setshowErrorMessage({ showAlert: false, message: '',alertBgColor:'' });
@@ -85,6 +83,7 @@ const SignUpPage = () => {
                     <input
                       type="text"
                       name="email"
+                      autoComplete="off"
                       placeholder="email"
                       onChange={handleChange}
                       value={signUpDetails.email}
@@ -96,6 +95,7 @@ const SignUpPage = () => {
                     <input
                       type="password"
                       name="password"
+                      autoComplete="new-password"
                       placeholder="Password"
                       onChange={handleChange}
                       value={signUpDetails.password}
@@ -107,6 +107,7 @@ const SignUpPage = () => {
                     <input
                       type="password"
                       name="confirmPassword"
+                      autoComplete="new-password"
                       placeholder="confirmPassword"
                       onChange={handleChange}
                       value={signUpDetails.confirmPassword}
