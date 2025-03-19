@@ -1,0 +1,164 @@
+/* Stepper container */
+.stepper-container {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  width: 100%;
+  padding: 25px;
+  box-sizing: border-box;
+  flex-direction: column;
+  background-color: rgba(5, 241, 241, 0.6196078431);
+}
+
+/* Container for navigation buttons */
+.stepper-navigation {
+  display: flex;
+  justify-content: space-evenly;
+  align-items: center;
+  width: 100%;
+  flex-wrap: nowrap;
+  box-shadow: rgb(12 29 45 / 20%) 0px 8px 24px;
+}
+
+/* Navigation buttons (Previous, Next) */
+.nav-button {
+  // padding: 10px 20px;
+  background-color: #89559dd1;
+  color: white;
+  border: none;
+  cursor: pointer;
+  font-size: 16px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: all 0.3s;
+}
+
+.nav-button:disabled {
+  background-color: #ddd;
+  cursor: not-allowed;
+}
+
+/* Stepper progress (horizontal scroll) */
+.stepper-progress {
+  display: flex;
+  overflow-x: auto;
+  padding: 10px;
+  gap: 15px;
+  max-width: 80%;
+  justify-content: flex-start;
+  scroll-snap-type: x mandatory; /* Ensure steps snap into place */
+  scroll-behavior: smooth; /* Smooth scrolling */
+}
+
+/* Individual step items */
+.step-item {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  scroll-snap-align: center;
+  min-width: 150px; /* Adjust width based on mobile size */
+  text-align: center;
+}
+
+/* Circle (Step indicator) */
+.step-circle {
+  width: 20px;
+  height: 20px;
+  border-radius: 50%;
+  background-color: #f0f0f0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-weight: bold;
+  /* margin-bottom: 5px; */
+  font-size: 10px;
+}
+
+.step-item.active .step-circle {
+  background-color: rgba(137, 85, 157, 0.8196078431);
+  color: white;
+}
+
+/* Step title */
+.step-title {
+  font-size: 12px;
+  color: #555;
+}
+
+/* Remove default scroll bar */
+.stepper-progress::-webkit-scrollbar {
+  display: none;
+}
+
+/* Responsive Design for Mobile */
+@media (max-width: 768px) {
+  .stepper-progress {
+    max-width: 100%;
+    justify-content: flex-start;
+  }
+
+  .step-item {
+    min-width: 120px; /* Adjust min-width on smaller screens */
+  }
+
+  .nav-button {
+    font-size: 14px;
+    //   padding: 8px 16px;
+  }
+  .stepper-container{
+    padding-top: 0;
+  }
+}
+
+/* Specifically for screens smaller than 550px */
+@media (max-width: 550px) {
+  .stepper-navigation {
+    flex-direction: row; /* Keep buttons in one row */
+    justify-content: space-between; /* Keep space between Next and Prev buttons */
+    width: 100%;
+  }
+
+  .stepper-progress {
+    max-width: 100%;
+    width: 100%;
+    padding: 0;
+    flex-wrap: nowrap;
+  }
+
+  .step-item {
+    min-width: 100px; /* Min width for steps on very small screens */
+  }
+
+  .nav-button {
+    width: auto; /* Buttons width auto for proper sizing */
+    //   padding: 12px;
+    font-size: 14px;
+    display: inline-block; /* Make buttons inline */
+  }
+
+  /* Make buttons stay next to each other */
+  .nav-button.prev-button,
+  .nav-button.next-button {
+    margin: 0 5px; /* Space between the buttons */
+  }
+}
+
+//   other than stepper styles
+.side-details {
+    position: absolute;
+    color: #555;
+  .site-id {
+    background-color: rgba(137, 85, 157, 0.8196078431);
+    color: #ffffff;
+  }
+  .site-data {
+    span {
+      font-size: 11px;
+    }
+  }
+  @media (max-width: 768px) {
+    position: unset;
+    padding-bottom: 20px;
+  }
+}
