@@ -11,7 +11,7 @@ export const Login = () => {
     const dispatch = useDispatch()
     const { login } = useAuth()
     // const loginDetails=useSelector((state: any) => state.updateLoginDetails)    
-    const [userCreds, setUserCred] = useState({ name_email: '', password: '' })
+    const [userCreds, setUserCred] = useState({ name_email: 'manu@gmail.com', password: 'Manu@123' })
     const [alertError, setalertError] = useState({ showAlert: false, message: '', alertBgColor:'' });
     const [showHidePassword, setshowHidePassword] = useState(false);
     const hideShowPassword = () => {

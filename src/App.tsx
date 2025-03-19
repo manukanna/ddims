@@ -1,6 +1,6 @@
 import './App.css';
 import { BrowserRouter, Routes, Route } from "react-router-dom";
-import { StepperComponent } from "./components/StepperComponent/StepperComponent"
+import { StepperComponent } from "./components/StepperComponent/StepComponent"
 import { SwitchLoginSignUpComponent } from './components/common_components/SwitchLoginSignUp/SwitchLoginSignUp';
 import { PrivateRoute } from "./components/ProtectedContent/PrivateRoute"
 import { AuthProvider } from './components/ProtectedContent/AuthContext';
