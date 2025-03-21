@@ -57,7 +57,7 @@ export const SurveyTabs = () => {
   
         {/* Tabs Dropdown for Mobile */}
         <select
-          className="tabs-dropdown"
+          className="tabs-dropdown mb-3"
           value={activeTab}
           onChange={handleSelectChange}
         >

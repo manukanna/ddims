@@ -29,7 +29,7 @@ export const SummaryComponent = () => {
     };
     return (
         <>
-            <div className='container-fluid'>
+            <div className='container-fluid px-1'>
                 <div className='row'>
                     <div className='col-xxl-5 col-xl-5 col-lg-5 col-md-8 col-sm-12 col-xs-12 mb-3'>
                         <div className='tab_content rounded-2 py-2 px-3'>

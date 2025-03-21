@@ -1,118 +1,118 @@
-import React, { useState, useRef } from "react";
-import "./stylesStep.scss";
+import React, { useRef } from 'react';
+import './stylesStep.scss'
 import { SurveyTabs } from './SurveyTabs';
 
-export const StepperComponent = () => {
-  const [currentStep, setCurrentStep] = useState(1);
-  const totalSteps = 12;
+export function StepperComponent() {
+    const [currentStep, setCurrentStep] = React.useState(0);
+    const NUMBER_OF_STEPS = 10;
 
-  // Titles for the steps
-  const stepTitles = [
-    "Received",
-    "Pre Survey",
-    "Pre Survey Complete",
-    "Survey",
-    "Survey Complete",
-    "Desgin",
-    "Design Started",
-    "Int QC",
-    "QC Fix(Int)",
-    "Site QC",
-    "QC Fix(Sitec)",
-    "Uploaded",
-  ];
+    // Array of titles for each step
+    const stepTitles = [
+        "Personal Info",
+        "Contact Info",
+        "Phone Number",
+        "Address",
+        "Confirmation",
+        "Address Book",
+        "Schedule",
+        "Payment",
+        "User Verification",
+        "Finish"
+    ];
 
-  // Use ref with correct type
-  const stepperRef = useRef<HTMLDivElement>(null);
+    const stepRefs = useRef<(HTMLDivElement | null)[]>([]);
 
-  // Handling "Next" button click
-  const handleNext = () => {
-    if (currentStep < totalSteps) {
-      setCurrentStep(currentStep + 1);
-      scrollToStep(currentStep + 1);
-    }
-  };
-
-  // Handling "Previous" button click
-  const handleBack = () => {
-    if (currentStep > 1) {
-      setCurrentStep(currentStep - 1);
-      scrollToStep(currentStep - 1);
-    }
-  };
-
-  // Scroll the stepper to the specific step
-  const scrollToStep = (step: number) => {
-    const stepElement = document.getElementById(`step-${step}`);
-    if (stepElement && stepperRef.current) {
-      const stepRect = stepElement.getBoundingClientRect();
-      const containerRect = stepperRef.current.getBoundingClientRect();
-      // Check if the step is within the visible area and scroll if necessary
-      if (
-        stepRect.left < containerRect.left ||
-        stepRect.right > containerRect.right
-      ) {
-        stepperRef.current.scrollTo({
-          left:
-            stepElement.offsetLeft - (containerRect.width - stepRect.width) / 2,
-          behavior: "smooth",
+    const goToNextStep = () => {
+        setCurrentStep((prev) => {
+            const newStep = prev === NUMBER_OF_STEPS - 1 ? prev : prev + 1;
+            scrollToStep(newStep); // Scroll to the next step
+            return newStep;
         });
-      }
-    }
-  };
+    };
 
-  return (
-    <>
-      <div className="stepper-container position-relative">
-        <div className="d-flex align-items-center top-0 start-0 mt-3 ms-4 side-details">
-          <div className="site-id rounded-5 p-1 px-2 me-2">R-</div>
-          <div className="site-data">
-            R-0398437<span className="ms-2">Saved</span>
-          </div>
-        </div>
-        <div className="text-center mb-2">
-          <strong>S & D Process</strong>
-          <div>Active for 65 days</div>
-        </div>
-        <div className="stepper-navigation rounded-top">
-          {/* Previous Button */}
-          <button
-            onClick={handleBack}
-            disabled={currentStep === 1}
-            className="nav-button prev-button"
-          >
-            <span className="material-symbols-outlined">chevron_left</span>
-          </button>
+    const goToPreviousStep = () => {
+        setCurrentStep((prev) => {
+            const newStep = prev <= 0 ? prev : prev - 1;
+            scrollToStep(newStep); // Scroll to the previous step
+            return newStep;
+        });
+    };
 
-          {/* Stepper Progress */}
-          <div className="stepper-progress" ref={stepperRef}>
-            {stepTitles.map((title, index) => (
-              <div
-                key={index}
-                className={`step-item ${
-                  index + 1 === currentStep ? "active" : ""
-                }`}
-                id={`step-${index + 1}`}
-              >
-                <div className="step-circle">{index + 1}</div>
-                <div className="step-title">{title}</div>
-              </div>
-            ))}
-          </div>
+    const activeColor = (index: any) => currentStep >= index ? 'bg-blue-600' : 'bg-gray-300';
+    const isFinalStep = (index: any) => index === NUMBER_OF_STEPS - 1;
+    const checkedStatus = (index: any) => currentStep >= index ?
+        <span className="material-symbols-outlined text-white">check</span> :
+        <span className="material-symbols-outlined text-white">radio_button_unchecked</span>;
 
-          {/* Next Button */}
-          <button
-            onClick={handleNext}
-            disabled={currentStep === totalSteps}
-            className="nav-button next-button"
-          >
-            <span className="material-symbols-outlined">chevron_right</span>
-          </button>
+    // Scroll to the specific step
+    const scrollToStep = (step: number) => {
+        if (stepRefs.current[step]) {
+            stepRefs.current[step]?.scrollIntoView({
+                behavior: 'smooth',
+                block: 'center', // Center the active step
+                inline: 'center', // Ensure it scrolls horizontally
+            });
+        }
+    };
+
+    return (
+        <div className='container-fluid'>
+            <div className='totalComponent px-3 my-2'>
+                <div className='d-flex items-center'>
+                    <div>
+                        <button
+                            onClick={goToPreviousStep}
+                            className="bg-blue-400 text-white rounded-md"
+                        >
+                            <span className="material-symbols-outlined">chevron_left</span>
+                        </button>
+                    </div>
+                    <div
+                        className="stepper-content mx-3 flex items-center overflow-x-auto space-x-6 px-3 py-5"
+                        style={{ maxWidth: '100%' }}
+                    >
+                        {Array.from({ length: NUMBER_OF_STEPS }).map((_, index) => (
+                            <React.Fragment key={index}>
+                                {/* Step circle and title stacked vertically */}
+                                <div className="flex flex-col items-center relative mx-0">
+                                    {/* Step Circle */}
+                                    <div
+                                        ref={(el: any) => (stepRefs.current[index] = el)}
+                                        className={`w-7 h-7 rounded-full ${activeColor(index)} flex items-center justify-center`}
+                                        style={{ flexShrink: 0, position: 'relative' }}
+                                    >
+                                        {checkedStatus(index)}
+                                    </div>
+
+                                    {/* Step Title */}
+                                    <div className="text-center text-sm mt-2" style={{ position: 'absolute', top: '100%' }}>
+                                        {stepTitles[index]}
+                                    </div>
+                                </div>
+
+                                {/* Line between steps */}
+                                {isFinalStep(index) ? null : (
+                                    <div
+                                        className={`w-40 h-1 px-0 mx-0 ${activeColor(index + 1)}`}
+                                        style={{ flexShrink: 0 }}
+                                    ></div>
+                                )}
+                            </React.Fragment>
+                        ))}
+                    </div>
+                    <div>
+                        <button
+                            onClick={goToNextStep}
+                            className="bg-blue-400 text-white rounded-md"
+                        >
+                            <span className="material-symbols-outlined">chevron_right</span>
+                        </button>
+                    </div>
+                </div>
+                <div>
+                    <SurveyTabs />
+                </div>
+            </div>
         </div>
-        <div className="container-fluid tabs-details rounded-bottom m-0 p-0">
-            <SurveyTabs/>
-        </div>
-      </div>
-    </>
-  );
-};
+    );
+}
