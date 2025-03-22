@@ -1,0 +1,20 @@
+// .stepper-content{
+  ::-webkit-scrollbar {
+    width: 0px;
+    height: 0px;
+  }
+// }
+
+/* stylesStep.scss */
+
+.step-title {
+  margin-top: 8px;
+  text-align: center;
+  font-size: 0.875rem; /* Adjust size as needed */
+  color: #333; /* Change color as needed */
+  width: 100%;
+}
+.totalComponent{
+  box-shadow: rgba(0, 0, 0, 0.16) 0px 3px 6px, rgba(0, 0, 0, 0.23) 0px 3px 6px;
+  height: calc(100vh - 1em);
+}

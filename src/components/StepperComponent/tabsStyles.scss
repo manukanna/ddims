@@ -1,0 +1,75 @@
+/* Styling for the Tabs container */
+.tabs-container {
+    font-family: 'Arial', sans-serif;
+    // margin: 20px auto;
+    // max-width: 600px;
+    // background-color: #f9f9f9;
+    border-radius: 8px;
+    overflow: hidden;
+  }
+  
+  /* Header section (tab buttons) */
+  .tabs-header {
+    display: flex;
+    // justify-content: space-evenly;
+    background-color: #fff;
+    // border-bottom: 2px solid #ddd;
+    box-shadow: 0px 13px 10px -15px #a09e9e;
+  }
+  
+  .tab-header {
+    padding: 10px;
+    cursor: pointer;
+    font-size: 16px;
+    text-align: center;
+    transition: all 0.3s ease-in-out;
+    color: #555;
+    border-bottom: 1px solid transparent;
+  }
+  
+  /* Styling for active tab */
+  .tab-header.active {
+    // background-color: #4caf50;
+    border-bottom: 2px solid rgba(137, 85, 157, 0.8196078431);
+    // color: white;
+    // font-weight: bold;
+    // border-bottom: 3px solid #4caf50;
+  }
+  
+  /* Content section for the active tab */
+  .tab-content {
+    background-color: #fff;
+    color: #333;
+    font-size: 16px;
+    height: calc(100vh - 15em);
+  }
+  
+  /* Mobile Dropdown */
+  .tabs-dropdown {
+    display: none;
+    width: 100%;
+    margin-top: 10px;
+    padding: 10px;
+    background-color: #fff;
+    font-size: 16px;
+    color: #333;
+    border: 1px solid #ddd;
+    border-radius: 4px;
+  }
+  
+  /* Media Query for Mobile View */
+  @media (max-width: 500px) {
+    /* Hide tabs header for mobile */
+    .tabs-header {
+      display: none;
+    }
+  
+    /* Display dropdown for mobile */
+    .tabs-dropdown {
+      display: block;
+    }
+  }
+  
+  .tabs-details{
+    background-color: #ffffff;
+  }
