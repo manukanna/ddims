@@ -1,73 +1,112 @@
 import { useState } from 'react';
 import './timeLine.scss';
+import { generateRandomId, getCurrentTimeAmPm } from '../common_Utilis/validationOfInputFields';
 
 export const TimeLimeComponent = () => {
     const [showCreateNote, setshowCreateNote] = useState(false);
-    const [showRecentTimeLimesData, setshowRecentTimeLimesData] = useState<any>({
-        showRecentTimeLimes: false,
-        recentTimeLInes: []
+    const [showRecentTimelineNotesState, setshowRecentTimelineNotesState] = useState<any>({
+        showRecentTimeLineNotes: false,
+        showPinnedTimeLineNotes: false,
+        recentTimeLineNotes: [],
+        pinnedTimeLineNotes: []
     });
-    const [createNote, setcreateNote] = useState({
-        noteTitle: '',
-        noteDescription: '',
-        noteAttachment: '',
-        createdNoteTime: ''
+    const [createTimeLineNote, setcreateTimeLineNote] = useState({
+        timeLineNoteTitle: '',
+        timeLineNoteDescription: '',
+        timeLineNoteAttachment: '',
+        timeLineNotecreatedTime: '',
+        pinnedTimeLineNote: false
     })
     const showCreateNoteContent = () => {
         setshowCreateNote(!showCreateNote);
-        setcreateNote({
-            noteTitle: '',
-            noteDescription: '',
-            noteAttachment: '',
-            createdNoteTime: ''
+        setcreateTimeLineNote({
+            timeLineNoteTitle: '',
+            timeLineNoteDescription: '',
+            timeLineNoteAttachment: '',
+            timeLineNotecreatedTime: '',
+            pinnedTimeLineNote: false
         })
     }
     const createContentData = (e: any) => {
         if (e.target.id === 'file-input') {
-            setcreateNote({ ...createNote, noteAttachment: URL.createObjectURL(e.target.files[0]) })
+            setcreateTimeLineNote({ ...createTimeLineNote, timeLineNoteAttachment: URL.createObjectURL(e.target.files[0]) })
             setshowCreateNote(true)
         } else {
-            setcreateNote({ ...createNote, [e.target.name]: e.target.value })
+            setcreateTimeLineNote({ ...createTimeLineNote, [e.target.name]: e.target.value })
         }
     }
 
-    const getAddNoteTime = () => {
-        const currentTime = new Date();
-        let hours = currentTime.getHours();
-        const minutes = currentTime.getMinutes();
-        const ampm = hours >= 12 ? 'PM' : 'AM';
-        hours = hours % 12;
-        hours = hours ? hours : 12;
-        const formattedTime = `${hours.toString().padStart(2, '0')}:${minutes.toString().padStart(2, '0')} ${ampm}`;
-        return formattedTime;
-    }
-
-    const generateRandomId = () => {
-        const timestamp = new Date().getTime();
-        const randomId = 'id-' + timestamp + '-' + Math.floor(Math.random() * 1000000);
-        return randomId;
-    }
-
     const addTinelineNote = () => {
-        const timeLineIcons = ['edit', 'keep', 'delete']
-        const createdNoteData = { ...createNote, createdNoteTime: getAddNoteTime(), timeLineIcons, id: generateRandomId() }
-        setshowRecentTimeLimesData({ ...showRecentTimeLimesData, recentTimeLInes: [...showRecentTimeLimesData.recentTimeLInes, createdNoteData], showRecentTimeLimes: true })
-        setcreateNote({
-            noteTitle: '',
-            noteDescription: '',
-            noteAttachment: '',
-            createdNoteTime: ''
-        })
+        if (createTimeLineNote.timeLineNoteTitle !== '' && createTimeLineNote.timeLineNoteDescription !== '') {
+            const timeLineIcons = ['edit', 'keep', 'delete']
+            const createdNoteData = { ...createTimeLineNote, timeLineNotecreatedTime: getCurrentTimeAmPm(), timeLineIcons, id: generateRandomId() }
+            setshowRecentTimelineNotesState({ ...showRecentTimelineNotesState, recentTimeLineNotes: [...showRecentTimelineNotesState.recentTimeLineNotes, createdNoteData], showRecentTimeLineNotes: true })
+            setcreateTimeLineNote({
+                timeLineNoteTitle: '',
+                timeLineNoteDescription: '',
+                timeLineNoteAttachment: '',
+                timeLineNotecreatedTime: '',
+                pinnedTimeLineNote: false
+            })
+        }
     }
 
-    const showRecentTimeLines = () => {
-        setshowRecentTimeLimesData({ ...showRecentTimeLimesData, showRecentTimeLimes: !showRecentTimeLimesData.showRecentTimeLimes })
+    const showRecentPinnedTimeLineNotes = (timeLineNoteShowHide: string) => {
+        if (timeLineNoteShowHide === "pinned") {
+            setshowRecentTimelineNotesState({ ...showRecentTimelineNotesState, showRecentTimeLineNotes: !showRecentTimelineNotesState.showRecentTimeLineNotes })
+        } else {
+            setshowRecentTimelineNotesState({ ...showRecentTimelineNotesState, showPinnedTimeLineNotes: !showRecentTimelineNotesState.showPinnedTimeLineNotes })
+        }
     }
     const actionTimeLine = (actionTimeItem: any, actionTimeIcon: string) => {
-        const noteTimeLineItems = showRecentTimeLimesData.recentTimeLInes;
-        const deleteNoteTimeLine = noteTimeLineItems.filter((item: { id: any; }) => item.id !== actionTimeItem.id);
-        setshowRecentTimeLimesData({ ...showRecentTimeLimesData, recentTimeLInes: deleteNoteTimeLine })
-        console.log(actionTimeItem)
+        const noteTimeLineItems = showRecentTimelineNotesState.recentTimeLineNotes;
+        if (actionTimeIcon === "delete") {
+            const deleteNoteTimeLineNote = noteTimeLineItems.filter((item: { id: any; }) => item.id !== actionTimeItem.id);
+            setshowRecentTimelineNotesState({ ...showRecentTimelineNotesState, recentTimeLineNotes: deleteNoteTimeLineNote })
+        } else if (actionTimeIcon === "keep") {
+            const [getPinnedNoteTimeLineNote] = noteTimeLineItems.filter((item: { id: any; }) => item.id === actionTimeItem.id);
+            const changePinIconNote = { ...getPinnedNoteTimeLineNote, pinnedTimeLineNote: true }
+            const getUnPinnedNoteTimeLineNote = noteTimeLineItems.filter((item: { id: any; }) => item.id !== actionTimeItem.id);
+            setshowRecentTimelineNotesState({ ...showRecentTimelineNotesState, recentTimeLineNotes: getUnPinnedNoteTimeLineNote, pinnedTimeLineNotes: [...showRecentTimelineNotesState.pinnedTimeLineNotes, changePinIconNote], showPinnedTimeLineNotes: true })
+        } else {
+            const noteTimeLineItems = showRecentTimelineNotesState.pinnedTimeLineNotes;
+            const [getUnPinnedNoteTimeLineNote] = noteTimeLineItems.filter((item: { id: any; }) => item.id === actionTimeItem.id);
+            const changePinIconNote = { ...getUnPinnedNoteTimeLineNote, pinnedTimeLineNote: false }
+            const getPinnedNoteTimeLineNotes = noteTimeLineItems.filter((item: { id: any; }) => item.id !== actionTimeItem.id);
+            setshowRecentTimelineNotesState({ ...showRecentTimelineNotesState, recentTimeLineNotes: [...showRecentTimelineNotesState.recentTimeLineNotes, changePinIconNote], pinnedTimeLineNotes: getPinnedNoteTimeLineNotes })
+        }
+    }
+    const getClickedDynamicPinnedIcon = (item: any, icon: any) => {
+        return item.pinnedTimeLineNote && icon === 'keep' ? 'keep_public' : icon
+    }
+
+    const recentPinnedAddedTimeLineNotes = (timeLineNotes: string) => {
+        return <>
+            {showRecentTimelineNotesState[timeLineNotes].map((item: any, index: any) => {
+                return (<div key={index}>
+                    <div className='border rounded-1 p-2 m-1 relative'>
+                        <div>Modified on : {item.timeLineNotecreatedTime}</div>
+                        <div className='absolute right-0 top-2 flex items-center justify-end'>
+
+                            {item.timeLineIcons.map((icon: any, iocnIndex: any) => {
+                                return (
+                                    <div key={iocnIndex}>
+                                        <span className="material-symbols-outlined icons_modify mx-2 cursor-pointer" onClick={() => actionTimeLine(item, getClickedDynamicPinnedIcon(item, icon))}>{getClickedDynamicPinnedIcon(item, icon)}</span>
+                                    </div>
+                                )
+                            })}
+                        </div>
+                        <div>
+                            <div className='py-1'><strong>Note Modified by :<span className='mx-2'>Manohar</span></strong></div>
+                            <div className='py-1'>{item.timeLineNoteTitle}</div>
+                            <div className='py-1'>{item.timeLineNoteDescription}</div>
+                            <div className='py-1 truncate w-50'> <a href={item.timeLineNoteAttachment} download="image.jpg"><button>{item.timeLineNoteAttachment}</button></a></div>
+
+                        </div>
+                    </div>
+                </div>)
+            })}
+        </>
     }
     return (
         <>
@@ -82,19 +121,19 @@ export const TimeLimeComponent = () => {
                     {showCreateNote ?
                         <div className='createNoteContent my-3'>
                             <div>
-                                <input value={createNote.noteTitle} onChange={createContentData} placeholder='Title' className='textField py-1 rounded-1 px-2 bg-gray-100 h-8 mb-2' type='text' name="noteTitle" />
+                                <input value={createTimeLineNote.timeLineNoteTitle} onChange={createContentData} placeholder='Title' className='textField py-1 rounded-1 px-2 bg-gray-100 h-8 mb-2' type='text' name="timeLineNoteTitle" />
                             </div>
                             <div>
-                                <textarea value={createNote.noteDescription} onChange={createContentData} placeholder='Description' className='textField py-1 rounded-1 px-2 bg-gray-100 h-20' name="noteDescription" />
+                                <textarea value={createTimeLineNote.timeLineNoteDescription} onChange={createContentData} placeholder='Description' className='textField py-1 rounded-1 px-2 bg-gray-100 h-20' name="timeLineNoteDescription" />
                             </div>
                             <div className='flex items-center justify-between'>
-                                {createNote.noteAttachment ?
-                                    <div className='truncate w-25'>{createNote.noteAttachment}</div> :
+                                {createTimeLineNote.timeLineNoteAttachment ?
+                                    <div className='truncate w-25'>{createTimeLineNote.timeLineNoteAttachment}</div> :
                                     <div className="image-upload">
                                         <label htmlFor="file-input">
-                                            <span className="material-symbols-outlined cursor-pointer">attach_file</span>
+                                            <span className="material-symbols-outlined cursor-pointer icons_modify">attach_file</span>
                                         </label>
-                                        <input onChange={createContentData} name="noteAttachment" className='d-none' id="file-input" type="file" />
+                                        <input onChange={createContentData} name="timeLineNoteAttachment" className='d-none' id="file-input" type="file" />
                                     </div>
                                 }
                                 <div>
@@ -106,49 +145,36 @@ export const TimeLimeComponent = () => {
                         <div className='enter_note my-3'>
                             <div className="flex items-center justify-between border-b-1 border-gray-200">
                                 <div className='cursor-pointer' onClick={showCreateNoteContent}>
-                                    <span className="material-symbols-outlined search_icon pr-2">edit</span><span>Enter Your Note...</span>
+                                    <span className="material-symbols-outlined search_icon pr-2 icons_modify">edit</span><span>Enter Your Note...</span>
                                 </div>
                                 <div className="image-upload">
                                     <label htmlFor="file-input">
-                                        <span className="material-symbols-outlined cursor-pointer">attach_file</span>
+                                        <span className="material-symbols-outlined cursor-pointer icons_modify">attach_file</span>
                                     </label>
                                     <input onChange={createContentData} className='d-none' id="file-input" type="file" />
                                 </div>
                             </div>
                         </div>}
 
-                    <div className='recentTimeLines'>
-                        <div className='flex items-center justify-center' onClick={showRecentTimeLines}>
-                            <span className="material-symbols-outlined">{showRecentTimeLimesData.showRecentTimeLimes ? "keyboard_arrow_down" : "keyboard_arrow_up"}</span> Recent <span className='w-100 mx-3'><hr /></span>
+                    <div className='recentTimeline'>
+                        {showRecentTimelineNotesState.pinnedTimeLineNotes.length ?
+                            <>
+                                <div className='flex items-center justify-center' onClick={() => showRecentPinnedTimeLineNotes('recent')}>
+                                    <span className="material-symbols-outlined">{showRecentTimelineNotesState.showPinnedTimeLineNotes ? "keyboard_arrow_down" : "keyboard_arrow_up"}</span> Pinned <span className='w-100 mx-3'><hr /></span>
+                                </div>
+                                <div>{showRecentTimelineNotesState.showPinnedTimeLineNotes ? recentPinnedAddedTimeLineNotes('pinnedTimeLineNotes') : ''}</div>
+                            </> : ''}
+
+
+
+                        <div className='flex items-center justify-center' onClick={() => showRecentPinnedTimeLineNotes('pinned')}>
+                            <span className="material-symbols-outlined">{showRecentTimelineNotesState.showRecentTimeLineNotes ? "keyboard_arrow_down" : "keyboard_arrow_up"}</span> Recent <span className='w-100 mx-3'><hr /></span>
                         </div>
-                        {showRecentTimeLimesData.showRecentTimeLimes && <div>
-                            {showRecentTimeLimesData.recentTimeLInes.length ?
-                                showRecentTimeLimesData.recentTimeLInes.map((item: any, index: any) => {
-                                    return (<div key={index}>
-                                        <div className='border rounded-1 p-2 m-1 relative'>
-                                            <div>Modified on : {item.createdNoteTime}</div>
-                                            <div className='absolute right-0 top-2 flex items-center justify-end'>
-                                                {item.timeLineIcons.map((icon: any, iocnIndex: any) => {
-                                                    return (
-                                                        <div key={iocnIndex}>
-                                                            <span className="material-symbols-outlined icons_modify mx-2 cursor-pointer" onClick={() => actionTimeLine(item, icon)}>{icon}</span>
-                                                        </div>
-                                                    )
-                                                })}
-                                            </div>
-                                            <div>
-                                                <div className='py-1'><strong>Note Modified by :<span className='mx-2'>Manohar</span></strong></div>
-                                                <div className='py-1'>{item.noteTitle}</div>
-                                                <div className='py-1'>{item.noteDescription}</div>
-                                                <div className='py-1 truncate w-50'> <a href={item.noteAttachment} download="image.jpg"><button>{item.noteAttachment}</button></a></div>
-
-                                            </div>
-                                        </div>
-                                    </div>)
-                                })
-
-                                : <div className='h-30 text-center flex items-center justify-center'>There are no time lines added Please Add</div>}
-                        </div>}
+                        {showRecentTimelineNotesState.showRecentTimeLineNotes &&
+                            showRecentTimelineNotesState.recentTimeLineNotes.length ?
+                            recentPinnedAddedTimeLineNotes('recentTimeLineNotes')
+                            : <div className='h-30 text-center flex items-center justify-center'>There are no time line added Please Add</div>
+                        }
                     </div>
                 </div>
             </div>

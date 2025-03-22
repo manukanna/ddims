@@ -40,7 +40,8 @@ export function StepperComponent() {
         });
     };
 
-    const activeColor = (index: any) => currentStep >= index ? 'bg-blue-600' : 'bg-gray-300';
+    const activeColor = (index: any) => currentStep === index ? 'bg-blue-600' : 'bg-gray-300';
+    const activeColorTitle = (index: any) => currentStep === index ? 'text-blue-600' : 'text-gray-600';
     const isFinalStep = (index: any) => index === NUMBER_OF_STEPS - 1;
     const checkedStatus = (index: any) => currentStep >= index ?
         <span className="material-symbols-outlined text-white">check</span> :
@@ -83,11 +84,11 @@ export function StepperComponent() {
                                         className={`w-7 h-7 rounded-full ${activeColor(index)} flex items-center justify-center`}
                                         style={{ flexShrink: 0, position: 'relative' }}
                                     >
-                                        {checkedStatus(index)}
+                                        <span className="material-symbols-outlined text-white">radio_button_unchecked</span>
                                     </div>
 
                                     {/* Step Title */}
-                                    <div className="text-center text-sm mt-2 w-30" style={{ position: 'absolute', top: '100%' }}>
+                                    <div className={`text-center text-sm mt-2 w-30 ${activeColorTitle(index)}`} style={{ position: 'absolute', top: '100%' }}>
                                         {stepTitles[index]}
                                     </div>
                                 </div>
@@ -95,7 +96,7 @@ export function StepperComponent() {
                                 {/* Line between steps */}
                                 {isFinalStep(index) ? null : (
                                     <div
-                                        className={`w-40 h-1 px-0 mx-0 ${activeColor(index + 1)}`}
+                                        className={`w-40 h-1 px-0 mx-0 bg-gray-300`}
                                         style={{ flexShrink: 0 }}
                                     ></div>
                                 )}
