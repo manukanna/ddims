@@ -4,20 +4,22 @@ import { SurveyTabs } from './SurveyTabs';
 
 export function StepperComponent() {
     const [currentStep, setCurrentStep] = React.useState(0);
-    const NUMBER_OF_STEPS = 10;
+    const NUMBER_OF_STEPS = 12;
 
     // Array of titles for each step
     const stepTitles = [
-        "Personal Info",
-        "Contact Info",
-        "Phone Number",
-        "Address",
-        "Confirmation",
-        "Address Book",
-        "Schedule",
-        "Payment",
-        "User Verification",
-        "Finish"
+        "Received",
+        "Pre-Survey",
+        "Pre-Survey Completed",
+        "Survey",
+        "Survey Complete",
+        "Design",
+        "Design Started",
+        "Int QC",
+        "QC Fix(Int)",
+        "Site QC",
+        "QC Fix (Sitec)",
+        "Uploaded",
     ];
 
     const stepRefs = useRef<(HTMLDivElement | null)[]>([]);
@@ -85,7 +87,7 @@ export function StepperComponent() {
                                     </div>
 
                                     {/* Step Title */}
-                                    <div className="text-center text-sm mt-2" style={{ position: 'absolute', top: '100%' }}>
+                                    <div className="text-center text-sm mt-2 w-30" style={{ position: 'absolute', top: '100%' }}>
                                         {stepTitles[index]}
                                     </div>
                                 </div>

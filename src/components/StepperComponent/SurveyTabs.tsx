@@ -68,7 +68,7 @@ export const SurveyTabs = () => {
           ))}
         </select>
   
-        <div className="tab-content">
+        <div className="tab-content overflow-y-auto pt-2">
           <div>{getTabContent(activeTab)}</div>
         </div>
       </div>
