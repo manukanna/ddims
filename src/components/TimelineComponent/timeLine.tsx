@@ -48,6 +48,7 @@ export const TimeLimeComponent = () => {
                 timeLineNotecreatedTime: '',
                 pinnedTimeLineNote: false
             })
+            setshowCreateNote(false)
         }
     }
 
@@ -165,16 +166,17 @@ export const TimeLimeComponent = () => {
                                 <div>{showRecentTimelineNotesState.showPinnedTimeLineNotes ? recentPinnedAddedTimeLineNotes('pinnedTimeLineNotes') : ''}</div>
                             </> : ''}
 
+                        {showRecentTimelineNotesState.recentTimeLineNotes.length ?
+                            <>
+                                <div className='flex items-center justify-center' onClick={() => showRecentPinnedTimeLineNotes('pinned')}>
+                                    <span className="material-symbols-outlined">{showRecentTimelineNotesState.showRecentTimeLineNotes ? "keyboard_arrow_down" : "keyboard_arrow_up"}</span> Recent <span className='w-100 mx-3'><hr /></span>
+                                </div>
+                                <div>
+                                    {showRecentTimelineNotesState.showRecentTimeLineNotes ? recentPinnedAddedTimeLineNotes('recentTimeLineNotes') : ''}
+                                </div>
+                            </>
+                            : <div className='border-top h-30 text-center flex items-center justify-center'>There are no time line Note for you. Please Add</div>}
 
-
-                        <div className='flex items-center justify-center' onClick={() => showRecentPinnedTimeLineNotes('pinned')}>
-                            <span className="material-symbols-outlined">{showRecentTimelineNotesState.showRecentTimeLineNotes ? "keyboard_arrow_down" : "keyboard_arrow_up"}</span> Recent <span className='w-100 mx-3'><hr /></span>
-                        </div>
-                        {showRecentTimelineNotesState.showRecentTimeLineNotes &&
-                            showRecentTimelineNotesState.recentTimeLineNotes.length ?
-                            recentPinnedAddedTimeLineNotes('recentTimeLineNotes')
-                            : <div className='h-30 text-center flex items-center justify-center'>There are no time line added Please Add</div>
-                        }
                     </div>
                 </div>
             </div>
