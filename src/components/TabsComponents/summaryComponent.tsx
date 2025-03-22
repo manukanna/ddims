@@ -47,7 +47,7 @@ export const SummaryComponent = () => {
     }
     return (
         <>
-            <div className='container-fluid px-1'>
+            <div className='container-fluid'>
                 <div className='row'>
                     <div className='col-xxl-5 col-xl-5 col-lg-5 col-md-6 col-sm-12 col-xs-12'>
                         <div className='tab_content rounded-2 py-2 px-3 mb-3'>
@@ -126,7 +126,7 @@ export const SummaryComponent = () => {
                                             <div>
                                                 <label>{item.title}</label>
                                             </div>
-                                            <div className='col-12 mt-1'>
+                                            <div className='mt-1'>
                                                 <input type="date" name={item.name} className='cursor-pointer bg-gray-200 py-2 px-2 w-100 rounded-[0.5vw]' />
                                             </div>
                                         </div>

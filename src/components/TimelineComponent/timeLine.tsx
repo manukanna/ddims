@@ -46,7 +46,7 @@ export const TimeLimeComponent = () => {
                             </div>
                             <div className='flex items-center justify-between'>
                                 {createNote.noteAttachment ?
-                                    <div className='truncate w-50'>{createNote.noteAttachment}</div> :
+                                    <div className='truncate w-25'>{createNote.noteAttachment}</div> :
                                     <div className="image-upload">
                                         <label htmlFor="file-input">
                                             <span className="material-symbols-outlined cursor-pointer">attach_file</span>
