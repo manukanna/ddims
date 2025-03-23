@@ -12,7 +12,6 @@ export const Login = () => {
     const [userCreds, setUserCred] = useState({ name_email: '', password: '' })
     const [alertError, setalertError] = useState({ showAlert: false, message: '', alertBgColor:'' });
     const [showHidePassword, setshowHidePassword] = useState(false);
-    console.log(signUpDetails, "manohar");
     
     const hideShowPassword = () => {
         setshowHidePassword(!showHidePassword)

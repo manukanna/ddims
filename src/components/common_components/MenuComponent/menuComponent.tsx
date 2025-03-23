@@ -1,8 +1,12 @@
 import Cookies from 'js-cookie';
 import React, { useState, useRef, useEffect } from 'react';
+import { useSelector } from 'react-redux';
 import { useNavigate } from 'react-router-dom';
 
 export const MenuDropdown = () => {
+    const { signUpDetails } = useSelector((state: any) => state.updateSignUpData);
+    console.log(signUpDetails);
+    
     const navigate = useNavigate();
     const [isOpen, setIsOpen] = useState(false);
     const dropdownRef = useRef<HTMLDivElement>(null);
@@ -45,10 +49,10 @@ export const MenuDropdown = () => {
                         </div>
                     </div>
                     <div className='flex flex-row items-center text-fuchsia-900 text-center mb-2 mt-2 font-bold'>
-                        <div className='h-15 w-15 border rounded-full flex items-center justify-center me-2 '>M#</div>
+                        <div className='h-15 w-15 border rounded-full flex items-center justify-center me-2 uppercase'>{signUpDetails.firstName.charAt(0) + '#'}</div>
                         <div className='text-left'>
-                            <div>Manohar</div>
-                            <div className='font-normal'>manu@gmail.com</div>
+                            <div>{signUpDetails.firstName + ' ' + signUpDetails.lastName}</div>
+                            <div className='font-normal'>{signUpDetails.email}</div>
                         </div>
                     </div>
                 </div>
