@@ -60,11 +60,14 @@ export const TimeLimeComponent = () => {
         }
     }
     const actionTimeLine = (actionTimeItem: any, actionTimeIcon: string) => {
-        const noteTimeLineItems = showRecentTimelineNotesState.recentTimeLineNotes;
         if (actionTimeIcon === "delete") {
+            const timeLineNotes = actionTimeItem.pinnedTimeLineNote ? showRecentTimelineNotesState.pinnedTimeLineNotes : showRecentTimelineNotesState.recentTimeLineNotes;
+            const updateStateTimeLineNotes = actionTimeItem.pinnedTimeLineNote ? 'pinnedTimeLineNotes' : 'recentTimeLineNotes';
+            const noteTimeLineItems = timeLineNotes;
             const deleteNoteTimeLineNote = noteTimeLineItems.filter((item: { id: any; }) => item.id !== actionTimeItem.id);
-            setshowRecentTimelineNotesState({ ...showRecentTimelineNotesState, recentTimeLineNotes: deleteNoteTimeLineNote })
+            setshowRecentTimelineNotesState({ ...showRecentTimelineNotesState, [updateStateTimeLineNotes]: deleteNoteTimeLineNote })
         } else if (actionTimeIcon === "keep") {
+            const noteTimeLineItems = showRecentTimelineNotesState.recentTimeLineNotes;
             const [getPinnedNoteTimeLineNote] = noteTimeLineItems.filter((item: { id: any; }) => item.id === actionTimeItem.id);
             const changePinIconNote = { ...getPinnedNoteTimeLineNote, pinnedTimeLineNote: true }
             const getUnPinnedNoteTimeLineNote = noteTimeLineItems.filter((item: { id: any; }) => item.id !== actionTimeItem.id);
@@ -127,7 +130,7 @@ export const TimeLimeComponent = () => {
                             <div>
                                 <textarea value={createTimeLineNote.timeLineNoteDescription} onChange={createContentData} placeholder='Description' className='textField py-1 rounded-1 px-2 bg-gray-100 h-20' name="timeLineNoteDescription" />
                             </div>
-                            <div className='flex items-center justify-between'>
+                            <div className='flex items-center justify-between pb-3 border-bottom'>
                                 {createTimeLineNote.timeLineNoteAttachment ?
                                     <div className='truncate w-25'>{createTimeLineNote.timeLineNoteAttachment}</div> :
                                     <div className="image-upload">
@@ -175,7 +178,7 @@ export const TimeLimeComponent = () => {
                                     {showRecentTimelineNotesState.showRecentTimeLineNotes ? recentPinnedAddedTimeLineNotes('recentTimeLineNotes') : ''}
                                 </div>
                             </>
-                            : <div className='border-top h-30 text-center flex items-center justify-center'>There are no time line Note for you. Please Add</div>}
+                            : <div className='h-30 text-center flex items-center justify-center'>There are no recent time line Note for you. Please Add</div>}
 
                     </div>
                 </div>
