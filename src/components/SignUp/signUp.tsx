@@ -1,14 +1,23 @@
 import { useState } from "react";
 import "../global_styles/loginSignUp.scss"
 import { DangerAlert } from "../common_components/alert_component/Alert_Component"
-import { SwitchLoginSignUpContent } from "../common_components/SwitchLoginSignUp/SwitchLoginSignUp" 
+import { SwitchLoginSignUpContent } from "../common_components/SwitchLoginSignUp/SwitchLoginSignUp"
 import { ValidateInputFields } from "../common_Utilis/validationOfInputFields"
 import { useDispatch } from "react-redux";
 import { swicthLoginSignUpComponent, updateSignUpData } from "../Redux/ddimsSlice";
+import { useNavigate } from "react-router-dom";
 
+type PasswordsType = {
+  [key: string]: boolean;
+};
 const SignUpPage = () => {
-  const dispatch = useDispatch()
-  const [showErrorMessage, setshowErrorMessage] = useState({ showAlert: false, message: '',alertBgColor:'' })
+  const dispatch = useDispatch();
+  const navigate = useNavigate();
+  const [showHidePassword, setshowHidePassword] = useState<PasswordsType>({
+    passwordEye: false,
+    confirmPasswordEye: false
+  });
+  const [showErrorMessage, setshowErrorMessage] = useState({ showAlert: false, message: '', alertBgColor: '' })
   const [signUpDetails, setSignUpDetails] = useState({
     firstName: "",
     lastName: "",
@@ -24,29 +33,48 @@ const SignUpPage = () => {
     e.preventDefault();
     const missingInputField = ValidateInputFields(signUpDetails);
     if (missingInputField) {
-      setshowErrorMessage({ showAlert: true, message: `Please verify the ${missingInputField} field`, alertBgColor:"dangerBackground" })
+      setshowErrorMessage({ showAlert: true, message: `Please verify the ${missingInputField} field`, alertBgColor: "dangerBackground" })
       setTimeout(() => {
-        setshowErrorMessage({ showAlert: false, message: '',alertBgColor:'' });
+        setshowErrorMessage({ showAlert: false, message: '', alertBgColor: '' });
       }, 2000);
     } else {
-      setshowErrorMessage({ showAlert: true, message: `your account has been created successfully` , alertBgColor:"successBackground"})
+      setshowErrorMessage({ showAlert: true, message: `your account has been created successfully`, alertBgColor: "successBackground" })
       setTimeout(() => {
-        setshowErrorMessage({ showAlert: false, message: '',alertBgColor:'' });
+        setshowErrorMessage({ showAlert: false, message: '', alertBgColor: '' });
         dispatch(updateSignUpData(signUpDetails));
-          dispatch(swicthLoginSignUpComponent(false));
-      }, 2000);
-          
-      setSignUpDetails({
-        firstName: "",
-        lastName: "",
-        password: "",
-        confirmPassword: "",
-        email: "",
-        catogery: "",
-      });
+        dispatch(swicthLoginSignUpComponent(true));
+        setSignUpDetails({
+          firstName: "",
+          lastName: "",
+          password: "",
+          confirmPassword: "",
+          email: "",
+          catogery: "",
+        });
+      }, 1500);
     }
   };
 
+  const hideShowPassword = (passwordType:string) => {
+    setshowHidePassword({...showHidePassword, [passwordType]:!showHidePassword[passwordType]})
+}
+
+  let passwordError;
+  let confirmPasswordError;
+  if (signUpDetails.password.length) {
+    if (signUpDetails.password.length < 8) {
+      passwordError = "Password should contain 8 Characters";
+    } else {
+      passwordError = "";
+    }
+  }
+  if (signUpDetails.confirmPassword.length) {
+    if (signUpDetails.confirmPassword !== signUpDetails.password) {
+      confirmPasswordError = "Confirm Password should match with Password";
+    } else {
+      confirmPasswordError = "";
+    }
+  }
   return (
     <>
       <div className="contaner position-relative">
@@ -65,10 +93,10 @@ const SignUpPage = () => {
                       onChange={handleChange}
                       value={signUpDetails.firstName}
                       className="w-100 px-2 py-2 input_focus_none"
+                      autoComplete="0ff"
                     />
-                    <br />
                   </div>
-                  <div className="input_parent my-2 text_starting position-relative">
+                  <div className="input_parent mb-1 text_starting position-relative">
                     <input
                       type="text"
                       name="lastName"
@@ -76,10 +104,10 @@ const SignUpPage = () => {
                       onChange={handleChange}
                       value={signUpDetails.lastName}
                       className="w-100 px-2 py-2 input_focus_none"
+                      autoComplete="0ff"
                     />
-                    <br />
                   </div>
-                  <div className="input_parent my-2 text_starting position-relative">
+                  <div className="input_parent mb-1 text_starting position-relative">
                     <input
                       type="text"
                       name="email"
@@ -89,11 +117,10 @@ const SignUpPage = () => {
                       value={signUpDetails.email}
                       className="w-100 px-2 py-2 input_focus_none"
                     />
-                    <br />
                   </div>
-                  <div className="input_parent my-2 text_starting position-relative">
+                  <div className="input_parent mb-1 text_starting position-relative">
                     <input
-                      type="password"
+                      type={showHidePassword.passwordEye ? 'text' : "password"}
                       name="password"
                       autoComplete="new-password"
                       placeholder="Password"
@@ -101,11 +128,15 @@ const SignUpPage = () => {
                       value={signUpDetails.password}
                       className="w-100 px-2 py-2 input_focus_none"
                     />
-                    <br />
+                    <div className="password_icons position-absolute" onClick={() => hideShowPassword('passwordEye')}>
+                      {showHidePassword.passwordEye ? <div><span className="icon_modify pointer material-symbols-outlined cursor">visibility</span></div>
+                        : <div><span className="icon_modify material-symbols-outlined pointer">visibility_off</span></div>}
+                    </div>
+                    <div className='text-red-500 text-[10px]'>{passwordError}</div>
                   </div>
-                  <div className="input_parent my-2 text_starting position-relative">
+                  <div className="input_parent mb-1 text_starting position-relative">
                     <input
-                      type="password"
+                      type={showHidePassword.confirmPasswordEye ? 'text' : "password"}
                       name="confirmPassword"
                       autoComplete="new-password"
                       placeholder="confirmPassword"
@@ -113,14 +144,18 @@ const SignUpPage = () => {
                       value={signUpDetails.confirmPassword}
                       className="w-100 px-2 py-2 input_focus_none"
                     />
-                    <br />
+                    <div className="password_icons position-absolute" onClick={() => hideShowPassword('confirmPasswordEye')}>
+                      {showHidePassword.confirmPasswordEye ? <div><span className="icon_modify pointer material-symbols-outlined cursor">visibility</span></div>
+                        : <div><span className="icon_modify material-symbols-outlined pointer">visibility_off</span></div>}
+                    </div>
+                    <div className='text-red-500 text-[10px]'>{confirmPasswordError}</div>
                   </div>
-                  <div className="input_parent my-2 text_starting position-relative">
+                  <div className="input_parent mb-1 text_starting position-relative">
                     <select
                       name="catogery"
                       onChange={handleChange}
                       value={signUpDetails.catogery}
-                      className="w-100 px-2 py-2 input_focus_none"
+                      className="border w-100 px-2 py-2 input_focus_none"
                     >
                       <option value=""> Select catogery</option>
                       <option value="admin">Admin</option>
@@ -129,10 +164,10 @@ const SignUpPage = () => {
                     </select>
                     <br />
                   </div>
-                  <button type="submit" onClick={handleCreateAccount} className="btn btn-primary my-2 submitButton w-100 py-2 my-3">
+                  <button disabled={!!passwordError || !!confirmPasswordError} type="submit" onClick={handleCreateAccount} className="btn btn-primary my-2 submitButton w-100 py-2 my-3">
                     Create
                   </button>
-                  <SwitchLoginSignUpContent/>
+                  <SwitchLoginSignUpContent />
                 </div>
               </div>
             </div>
