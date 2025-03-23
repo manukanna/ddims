@@ -5,7 +5,6 @@ import { useNavigate } from 'react-router-dom';
 
 export const MenuDropdown = () => {
     const { signUpDetails } = useSelector((state: any) => state.updateSignUpData);
-    console.log(signUpDetails);
     
     const navigate = useNavigate();
     const [isOpen, setIsOpen] = useState(false);
