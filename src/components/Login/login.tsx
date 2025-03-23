@@ -2,18 +2,18 @@ import { useState } from "react"
 import "../global_styles/loginSignUp.scss"
 import { SwitchLoginSignUpContent } from "../common_components/SwitchLoginSignUp/SwitchLoginSignUp"
 import { DangerAlert } from "../common_components/alert_component/Alert_Component"
-import { useDispatch } from "react-redux"
-import { updateLoginDetails } from "../Redux/ddimsSlice"
+import { useSelector } from "react-redux"
 import { useAuth } from "../ProtectedContent/AuthContext";
 import { expiryTokenData } from "../ProtectedContent/secureAuthentication"
 
 export const Login = () => {
-    const dispatch = useDispatch()
     const { login } = useAuth()
-    // const loginDetails=useSelector((state: any) => state.updateLoginDetails)    
-    const [userCreds, setUserCred] = useState({ name_email: 'manu@gmail.com', password: 'Manu@123' })
+    const { signUpDetails } = useSelector((state: any) => state.updateSignUpData)    
+    const [userCreds, setUserCred] = useState({ name_email: '', password: '' })
     const [alertError, setalertError] = useState({ showAlert: false, message: '', alertBgColor:'' });
     const [showHidePassword, setshowHidePassword] = useState(false);
+    console.log(signUpDetails, "manohar");
+    
     const hideShowPassword = () => {
         setshowHidePassword(!showHidePassword)
     }
@@ -24,8 +24,7 @@ export const Login = () => {
         if ((userCreds.name_email === "") || (userCreds.password === "")) {
             alertMessageResponse({ showAlert: true, message: 'Please verify your Username or Password.', alertBgColor:'dangerBackground' })
         } else {
-            if((userCreds.name_email === "manu@gmail.com" && userCreds.password === "Manu@123")) {
-            dispatch(updateLoginDetails(userCreds));
+            if((userCreds.name_email === signUpDetails.email && userCreds.password === signUpDetails.password)) {
             expiryTokenData();
             login();
             } else {
@@ -50,12 +49,12 @@ export const Login = () => {
                                 <h6 className="mb-4 medium_font_size">Please Enter below Details to Experience</h6>
                                 <div>
                                     <div className="input_parent w-100 my-2 text_starting">
-                                        <label htmlFor="name_email">Username / Email*</label>
-                                        <input autoComplete="off" onChange={userCredsChange} value={userCreds.name_email} type="text" id="name_email" name="name_email" className="w-100 px-2 py-2 input_focus_none" />
+                                        {/* <label htmlFor="name_email">Username / Email*</label> */}
+                                        <input placeholder="Username / Email" autoComplete="off" onChange={userCredsChange} value={userCreds.name_email} type="text" id="name_email" name="name_email" className="w-100 px-2 py-2 input_focus_none" />
                                     </div>
                                     <div className="input_parent my-2 text_starting position-relative">
-                                        <label htmlFor="password">Password*</label>
-                                        <input autoComplete="new-password" onChange={userCredsChange} value={userCreds.password} type={showHidePassword ? 'text' : 'password'} id="password" name="password" className="w-100 ps-2 pe-5 py-2 input_focus_none" />
+                                        {/* <label htmlFor="password">Password*</label> */}
+                                        <input placeholder="Password" autoComplete="new-password" onChange={userCredsChange} value={userCreds.password} type={showHidePassword ? 'text' : 'password'} id="password" name="password" className="w-100 ps-2 pe-5 py-2 input_focus_none" />
                                         <div className="password_icons position-absolute" onClick={hideShowPassword}>
                                             {showHidePassword ? <div><span className="icon_modify pointer material-symbols-outlined cursor">visibility</span></div>
                                                 : <div><span className="icon_modify material-symbols-outlined pointer">visibility_off</span></div>}
