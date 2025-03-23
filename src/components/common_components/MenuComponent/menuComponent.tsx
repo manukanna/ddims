@@ -31,7 +31,7 @@ export const MenuDropdown = () => {
 
             <button
                 onClick={toggleDropdown}
-                className="px-2 py-1 h-8 w-8"
+                className="px-2 py-1 h-8 w-8 uppercase"
             >
                {signUpDetails.firstName.charAt(0)}
             </button>
