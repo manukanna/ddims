@@ -33,7 +33,7 @@ export const MenuDropdown = () => {
                 onClick={toggleDropdown}
                 className="px-2 py-1 h-8 w-8"
             >
-               {signUpDetails.firstName.charAt(0) + '#'}
+               {signUpDetails.firstName.charAt(0)}
             </button>
 
             {isOpen && (
