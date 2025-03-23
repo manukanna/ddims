@@ -108,7 +108,7 @@ export const SummaryComponent = () => {
                                 {summaryInputFields.buldingImage ?
                                     <div className='relative w-34'>
                                         <img className='rounded-[1vw] h-48' src={summaryInputFields.buldingImage} alt="" />
-                                        <span className='absolute right-2 top-0 bg-white rounded-[1vw] h-6 cursor-pointer' onClick={changingBuildingImage}>
+                                        <span className='absolute right-0.5 top-1 bg-white rounded-[1vw] h-6 cursor-pointer' onClick={changingBuildingImage}>
                                             <span className="material-symbols-outlined text-sm">close</span>
                                         </span>
                                     </div> :
