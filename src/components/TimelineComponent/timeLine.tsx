@@ -1,6 +1,6 @@
 import { useState } from 'react';
 import './timeLine.scss';
-import { generateRandomId, getCurrentTimeAmPm } from '../common_Utilis/validationOfInputFields';
+import { generateRandomId, getCurrentTimeAmPm } from '../CommonUtilis/validationOfInputFields';
 
 export const TimeLimeComponent = () => {
     const [showCreateNote, setshowCreateNote] = useState(false);

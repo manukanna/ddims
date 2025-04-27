@@ -11,6 +11,13 @@ interface ComponentInterface {
     email: string,
     catogery: string,
   };
+  loggedInUser:{
+    email:string,
+    firstname: string,
+    lastName: string,
+    userType: string,
+    id: string
+}
 }
 
 const initialState: ComponentInterface = {
@@ -22,12 +29,19 @@ const initialState: ComponentInterface = {
       confirmPassword: "",
       email: "",
       catogery: "",
-    }
+    },
+    loggedInUser:{
+      email:"",
+      firstname: "",
+      lastName: "",
+      userType: "",
+      id:''
+  }
 };
 
 // Create a slice
 const componentSlice = createSlice({
-  name: 'counter',  // name of the slice
+  name: 'userData',  // name of the slice
   initialState,     // initial state of the counter
   reducers: {
     // Increment action
@@ -35,14 +49,17 @@ const componentSlice = createSlice({
       state.switchLoginSignUp = action.payload;
     },
     updateSignUpData: (state, action) => {
-      state.signUpDetails = action.payload
+      state.signUpDetails = action.payload;
     },
+    loggedUserDetails:(state, action) => {
+      state.loggedInUser = action.payload;
+    }
   },
 });
 
 
 // Export the increment action
-export const { swicthLoginSignUpComponent, updateSignUpData} = componentSlice.actions;
+export const { swicthLoginSignUpComponent, updateSignUpData, loggedUserDetails} = componentSlice.actions;
 
 // Export the reducer
 export default componentSlice.reducer;

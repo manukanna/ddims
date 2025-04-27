@@ -4,8 +4,7 @@ import { useSelector } from 'react-redux';
 import { useNavigate } from 'react-router-dom';
 
 export const MenuDropdown = () => {
-    const { signUpDetails } = useSelector((state: any) => state.updateSignUpData);
-    
+    const {loggedInUser} = useSelector((state: any) => state.loggedUserDetails);
     const navigate = useNavigate();
     const [isOpen, setIsOpen] = useState(false);
     const dropdownRef = useRef<HTMLDivElement>(null);
@@ -33,7 +32,7 @@ export const MenuDropdown = () => {
                 onClick={toggleDropdown}
                 className="px-2 py-1 h-8 w-8 uppercase"
             >
-               {signUpDetails.firstName.charAt(0)}
+               {loggedInUser?.firstName?.charAt(0)}
             </button>
 
             {isOpen && (
@@ -48,10 +47,10 @@ export const MenuDropdown = () => {
                         </div>
                     </div>
                     <div className='flex flex-row items-center text-fuchsia-900 text-center mb-2 mt-2 font-bold'>
-                        <div className='h-15 w-15 border rounded-full flex items-center justify-center me-2 uppercase'>{signUpDetails.firstName.charAt(0) + '#'}</div>
+                        <div className='h-15 w-15 border rounded-full flex items-center justify-center me-2 uppercase'>{loggedInUser?.firstName.charAt(0) + '#'}</div>
                         <div className='text-left'>
-                            <div>{signUpDetails.firstName + ' ' + signUpDetails.lastName}</div>
-                            <div className='font-normal'>{signUpDetails.email}</div>
+                            <div>{loggedInUser?.firstName + ' ' + loggedInUser?.lastName}</div>
+                            <div className='font-normal'>{loggedInUser?.email}</div>
                         </div>
                     </div>
                 </div>

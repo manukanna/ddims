@@ -1,18 +1,19 @@
 import { useState } from "react"
-import "../global_styles/loginSignUp.scss"
-import { SwitchLoginSignUpContent } from "../common_components/SwitchLoginSignUp/SwitchLoginSignUp"
-import { DangerAlert } from "../common_components/alert_component/Alert_Component"
-import { useSelector } from "react-redux"
+import "../GlobalStyles/loginSignUp.scss"
+import { SwitchLoginSignUpContent } from "../CommonComponents/SwitchLoginSignUp/SwitchLoginSignUp"
+import { DangerAlert } from "../CommonComponents/alert_component/Alert_Component"
+import { useDispatch } from "react-redux"
 import { useAuth } from "../ProtectedContent/AuthContext";
 import { expiryTokenData } from "../ProtectedContent/secureAuthentication"
+import { loggedUserDetails } from "../Redux/ddimsSlice"
 
 export const Login = () => {
+    const dispatch = useDispatch();
     const { login } = useAuth()
-    const { signUpDetails } = useSelector((state: any) => state.updateSignUpData)    
-    const [userCreds, setUserCred] = useState({ name_email: '', password: '' })
-    const [alertError, setalertError] = useState({ showAlert: false, message: '', alertBgColor:'' });
+    const [userCreds, setUserCred] = useState({ email: '', password: '' })
+    const [alertError, setalertError] = useState({ showAlert: false, message: '', alertBgColor: '' });
     const [showHidePassword, setshowHidePassword] = useState(false);
-    
+
     const hideShowPassword = () => {
         setshowHidePassword(!showHidePassword)
     }
@@ -20,36 +21,58 @@ export const Login = () => {
         setUserCred({ ...userCreds, [e.target.name]: e.target.value })
     }
     const submitUserCreds = () => {
-        if ((userCreds.name_email === "") || (userCreds.password === "")) {
-            alertMessageResponse({ showAlert: true, message: 'Please verify your Username or Password.', alertBgColor:'dangerBackground' })
+        if ((userCreds.email === "") || (userCreds.password === "")) {
+            alertMessageResponse({ showAlert: true, message: 'Please verify your Username or Password.', alertBgColor: 'dangerBackground' })
         } else {
-            if((userCreds.name_email === signUpDetails.email && userCreds.password === signUpDetails.password)) {
-            expiryTokenData();
-            login();
-            } else {
-                alertMessageResponse({ showAlert: true, message: 'Please verify your Username or Password.', alertBgColor:'dangerBackground' })
-            }
+            loginUser()
         }
     }
-    const alertMessageResponse = (alertMessageObj: { showAlert: boolean, message: string, alertBgColor:string }) => {
+
+    const loginUser = async () => {
+        const registyerUrl = process.env.REACT_APP_API_URL+'/login';
+        try {
+            const response = await fetch(registyerUrl, {
+                method: "POST",
+                headers: { "Content-Type": "application/json" },
+                body: JSON.stringify(userCreds),
+            });
+            const res = await response.json();
+            if (!response.ok) {
+                const message = res.error;
+                alertMessageResponse({ showAlert: true, message, alertBgColor: "dangerBackground" });
+                setTimeout(() => {
+                    alertMessageResponse({ showAlert: false, message: "", alertBgColor: "" });
+                }, 1500);
+                return;
+            } else {
+                expiryTokenData(res?.uniqueToken);
+                login();
+                dispatch(loggedUserDetails(res.userDetails))
+            }
+        } catch (error: any) {
+            alertMessageResponse({ showAlert: true, message: "Something went wrong. Please try again.", alertBgColor: "dangerBackground", });
+        }
+    };
+
+    const alertMessageResponse = (alertMessageObj: { showAlert: boolean, message: string, alertBgColor: string }) => {
         setalertError(alertMessageObj);
         setTimeout(() => {
-            setalertError({ showAlert: false, message: '', alertBgColor:'red' })
+            setalertError({ showAlert: false, message: '', alertBgColor: '' })
         }, 2000);
     }
     return (
         <>
             <div className="contaner position-relative">
                 <div className="loginSignUp_component">
-                        <div className="d-flex justify-content-center align-items-center full_min_height">
-                    <div className="col-xl-3 col-lg-4 col-md-5 col-sm-6 col-11">
+                    <div className="d-flex justify-content-center align-items-center full_min_height">
+                        <div className="col-xl-3 col-lg-4 col-md-5 col-sm-6 col-11">
                             <div className="loginSignUp_box p-4 rounded text_center ">
                                 <h3 className="my-2">Welcome DDIMS</h3>
                                 <h6 className="mb-4 medium_font_size">Please Enter below Details to Experience</h6>
                                 <div>
                                     <div className="input_parent w-100 my-2 text_starting">
-                                        {/* <label htmlFor="name_email">Username / Email*</label> */}
-                                        <input placeholder="Username / Email" autoComplete="off" onChange={userCredsChange} value={userCreds.name_email} type="text" id="name_email" name="name_email" className="w-100 px-2 py-2 input_focus_none" />
+                                        {/* <label htmlFor="email">Username / Email*</label> */}
+                                        <input placeholder="Username / Email" autoComplete="off" onChange={userCredsChange} value={userCreds.email} type="text" id="email" name="email" className="w-100 px-2 py-2 input_focus_none" />
                                     </div>
                                     <div className="input_parent my-2 text_starting position-relative">
                                         {/* <label htmlFor="password">Password*</label> */}

@@ -1,7 +1,7 @@
 import React, { useRef } from 'react';
 import './stylesStep.scss'
 import { SurveyTabs } from './SurveyTabs';
-import { MenuDropdown } from '../common_components/MenuComponent/menuComponent';
+import { MenuDropdown } from '../CommonComponents/MenuComponent/menuComponent';
 
 export function StepperComponent() {
     const [currentStep, setCurrentStep] = React.useState(0);
@@ -44,9 +44,9 @@ export function StepperComponent() {
     const activeColor = (index: any) => currentStep === index ? 'bg-fuchsia-900' : 'bg-gray-300';
     const activeColorTitle = (index: any) => currentStep === index ? 'text-fuchsia-900' : 'text-gray-600';
     const isFinalStep = (index: any) => index === NUMBER_OF_STEPS - 1;
-    const checkedStatus = (index: any) => currentStep >= index ?
-        <span className="material-symbols-outlined text-white">check</span> :
-        <span className="material-symbols-outlined text-white">radio_button_unchecked</span>;
+    // const checkedStatus = (index: any) => currentStep >= index ?
+    //     <span className="material-symbols-outlined text-white">check</span> :
+    //     <span className="material-symbols-outlined text-white">radio_button_unchecked</span>;
 
     // Scroll to the specific step
     const scrollToStep = (step: number) => {
