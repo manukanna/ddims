@@ -2,6 +2,7 @@
 import React, { createContext, useState, useEffect, useContext, ReactNode, useCallback } from 'react';
 import { useNavigate } from 'react-router-dom';
 import Cookies from 'js-cookie';
+import { useSelector } from 'react-redux';
 interface AuthContextType {
     isAuthenticated: boolean;
     login: () => void;
@@ -24,6 +25,7 @@ interface AuthProviderProps {
 }
 
 export const AuthProvider: React.FC<AuthProviderProps> = ({ children }) => {
+    const { loggedInUser } = useSelector((state: any) => state.loggedUserDetails);
     const [isAuthenticated, setIsAuthenticated] = useState<boolean>(false);
     const navigate = useNavigate();
 
@@ -44,11 +46,11 @@ export const AuthProvider: React.FC<AuthProviderProps> = ({ children }) => {
         const token = Cookies.get('authToken');
         if (token && !isTokenExpired()) {
             setIsAuthenticated(true);
-            navigate('/stepper');
+            navigate(loggedInUser.userType === 'user' ? '/user-form' : '/admin');
         } else {
             logout();
         }
-    }, [navigate, isTokenExpired]);
+    }, [navigate, isTokenExpired, loggedInUser]);
 
     // check every 1 minute to logout
     useEffect(() => {

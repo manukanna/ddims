@@ -1,18 +1,18 @@
 import { useState } from "react";
-import "../global_styles/loginSignUp.scss"
-import { DangerAlert } from "../common_components/alert_component/Alert_Component"
-import { SwitchLoginSignUpContent } from "../common_components/SwitchLoginSignUp/SwitchLoginSignUp"
-import { ValidateInputFields } from "../common_Utilis/validationOfInputFields"
+import "../GlobalStyles/loginSignUp.scss"
+import { DangerAlert } from "../CommonComponents/alert_component/Alert_Component"
+import { SwitchLoginSignUpContent } from "../CommonComponents/SwitchLoginSignUp/SwitchLoginSignUp"
+import { ValidateInputFields } from "../CommonUtilis/validationOfInputFields"
 import { useDispatch } from "react-redux";
 import { swicthLoginSignUpComponent, updateSignUpData } from "../Redux/ddimsSlice";
-import { useNavigate } from "react-router-dom";
+// import { useNavigate } from "react-router-dom";
 
 type PasswordsType = {
   [key: string]: boolean;
 };
 const SignUpPage = () => {
   const dispatch = useDispatch();
-  const navigate = useNavigate();
+  // const navigate = useNavigate();
   const [showHidePassword, setshowHidePassword] = useState<PasswordsType>({
     passwordEye: false,
     confirmPasswordEye: false
@@ -24,7 +24,7 @@ const SignUpPage = () => {
     password: "",
     confirmPassword: "",
     email: "",
-    catogery: "",
+    userType: "",
   });
   const handleChange = (e: { target: any }) => {
     setSignUpDetails({ ...signUpDetails, [e.target.name]: e.target.value });
@@ -33,14 +33,27 @@ const SignUpPage = () => {
     e.preventDefault();
     const missingInputField = ValidateInputFields(signUpDetails);
     if (missingInputField) {
-      setshowErrorMessage({ showAlert: true, message: `Please verify the ${missingInputField} field`, alertBgColor: "dangerBackground" })
-      setTimeout(() => {
-        setshowErrorMessage({ showAlert: false, message: '', alertBgColor: '' });
-      }, 2000);
+      alertMessageResponse({ showAlert: true, message: `Please verify the ${missingInputField} field`, alertBgColor: "dangerBackground" })
     } else {
-      setshowErrorMessage({ showAlert: true, message: `your account has been created successfully`, alertBgColor: "successBackground" })
-      setTimeout(() => {
-        setshowErrorMessage({ showAlert: false, message: '', alertBgColor: '' });
+      registerUser();
+    }
+  };
+
+
+  const registerUser = async () => {
+    const registyerUrl = process.env.REACT_APP_API_URL+'/register';
+    try {
+      const response = await fetch(registyerUrl, {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify(signUpDetails),
+      });
+      const res = await response.json();
+      if (!response.ok) {
+        const message = res.errors?.[0];
+        alertMessageResponse({ showAlert: true, message, alertBgColor: "dangerBackground" });
+        return;
+      } else {
         dispatch(updateSignUpData(signUpDetails));
         dispatch(swicthLoginSignUpComponent(true));
         setSignUpDetails({
@@ -49,15 +62,24 @@ const SignUpPage = () => {
           password: "",
           confirmPassword: "",
           email: "",
-          catogery: "",
+          userType: "",
         });
-      }, 1500);
+      }
+    } catch (error: any) {
+      alertMessageResponse({ showAlert: true, message: "Something went wrong. Please try again.", alertBgColor: "dangerBackground", });
     }
   };
 
-  const hideShowPassword = (passwordType:string) => {
-    setshowHidePassword({...showHidePassword, [passwordType]:!showHidePassword[passwordType]})
-}
+  const alertMessageResponse = (alertMessageObj: { showAlert: boolean, message: string, alertBgColor: string }) => {
+    setshowErrorMessage(alertMessageObj);
+    setTimeout(() => {
+      setshowErrorMessage({ showAlert: false, message: '', alertBgColor: '' })
+    }, 2000);
+  }
+
+  const hideShowPassword = (passwordType: string) => {
+    setshowHidePassword({ ...showHidePassword, [passwordType]: !showHidePassword[passwordType] })
+  }
 
   let passwordError;
   let confirmPasswordError;
@@ -152,12 +174,12 @@ const SignUpPage = () => {
                   </div>
                   <div className="input_parent mb-1 text_starting position-relative">
                     <select
-                      name="catogery"
+                      name="userType"
                       onChange={handleChange}
-                      value={signUpDetails.catogery}
+                      value={signUpDetails.userType}
                       className="border w-100 px-2 py-2 input_focus_none"
                     >
-                      <option value=""> Select catogery</option>
+                      <option value=""> Select User Type</option>
                       <option value="admin">Admin</option>
                       <option value="user">User</option>
                       <option value="vendor">Vendor</option>
