@@ -38,7 +38,7 @@ export const MenuDropdown = () => {
             {isOpen && (
                 <div className="absolute right-0 mt-2 w-80 bg-white shadow-lg rounded-md ring-1 ring-black ring-opacity-5 z-99 px-2 py-2">
                     <div className='flex justify-between items-center border-b-1 border-gray-300'>
-                        <div className='text-fuchsia-900 text-sm'>User profile</div>
+                        <div className='text-fuchsia-900 text-sm capitalize'>{loggedInUser?.userType} profile</div>
                         <div>
                             <button onClick={logout} className="block w-auto text-sm text-gray-700">
                                 <span className="material-symbols-outlined mx-2">power_settings_new</span>

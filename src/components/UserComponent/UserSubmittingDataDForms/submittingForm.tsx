@@ -20,7 +20,7 @@ export const UserSubmittingForm = () => {
             { label: "DPID", value: '', name: 'dipd' },
             { label: "PIANOI#", value: '', name: 'pianoi' },
             { label: "Pre-Survey-Planner", value: '', name: 'preSurveyPlanner' },
-            { label: "Surveyor", value: '', name: 'region' },
+            { label: "Surveyor", value: '', name: 'surveyor' },
             { label: "Planner", value: '', name: 'planner' },
         ],
         surveyFormfiles: [
